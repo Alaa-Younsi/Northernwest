@@ -7,11 +7,7 @@ This is a fully custom Shopify Online Store 2.0 theme for Northernwest, engineer
 Built by Alaa Younsi, professional web developer and creator of this custom Northernwest theme.
 
 ## Screenshots
-Add screenshots here:
-- Hero section
-- Product page
-- Collection grid
-- Cart drawer
+
 
 ## Design Direction
 - Visual language: black, white, and red only, with sharp typography and controlled spacing.
@@ -58,9 +54,15 @@ Add screenshots here:
 - No custom checkout logic or sensitive data handling.
 - Theme built to align with Shopify best practices.
 
-## Local Preview
-Use Shopify CLI:
+## 👨‍💻 Credits
 
-```
-shopify theme dev --store v6q070-kd.myshopify.com
-```
+**Website Created by:** [Alaa Younsi](https://alaayounsi.vercel.app/)
+
+---
+
+## 📄 License
+
+Copyright (c) 2026 Northernwest. All rights reserved.
+This project is private and proprietary to Northernwest. No part of this project may be copied, modified, or redistributed for any commercial or personal use without the express written permission of the author.
+
+- **Accessibility Checks** - WCAG compliance validation
