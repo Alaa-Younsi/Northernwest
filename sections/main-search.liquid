@@ -1,0 +1,39 @@
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h1 class="section-title">Search</h1>
+      {% if search.performed %}
+        <p class="text-sm text-muted">{{ search.results_count }} results for "{{ search.terms | escape }}"</p>
+      {% endif %}
+    </div>
+
+    <form action="{{ routes.search_url }}" method="get" class="footer-search" role="search">
+      <input class="input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search products" aria-label="Search products">
+      <input type="hidden" name="type" value="product">
+      <button class="btn btn-outline" type="submit">Search</button>
+    </form>
+
+    {% if search.performed %}
+      {% if search.results_count > 0 %}
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
+          {% for item in search.results %}
+            {% if item.object_type == 'product' %}
+              {% render 'product-card', product: item %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-muted mt-8">No products found for "{{ search.terms | escape }}".</p>
+      {% endif %}
+    {% else %}
+      <p class="text-muted mt-8">Search for products from Northernwest.</p>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main search",
+  "settings": []
+}
+{% endschema %}

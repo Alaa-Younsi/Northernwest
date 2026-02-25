@@ -1,0 +1,54 @@
+<div>
+  <div class="cart-overlay fixed inset-0 bg-black-90 z-40" data-cart-overlay></div>
+  <aside class="cart-drawer fixed top-0 right-0 h-screen w-full md:w-1/3 bg-black border border-muted translate-x-full z-50" data-cart-drawer>
+    <div class="drawer-header">
+      <h2 class="text-lg uppercase tracking-widest">{{ 'cart.title' | t }}</h2>
+      <button class="text-sm uppercase tracking-wide" data-cart-close>{{ 'general.accessibility.close' | t }}</button>
+    </div>
+    <div class="drawer-body" data-cart-content>
+      {% if cart.item_count == 0 %}
+        <p class="text-muted">{{ 'cart.empty' | t }}</p>
+      {% else %}
+        <div class="flex flex-col gap-6">
+          {% for item in cart.items %}
+            <div class="cart-item" data-line="{{ forloop.index }}">
+              <div class="cart-thumb">
+                {{ item.image | image_url: width: 240 | image_tag: class: 'cart-thumb-image', loading: 'lazy', alt: item.image.alt | default: item.product.title }}
+              </div>
+              <div class="cart-item-body">
+                <p class="font-semibold">{{ item.product.title }}</p>
+                <p class="text-sm text-muted">{{ item.variant.title }}</p>
+                <div class="cart-controls">
+                  <button class="qty-btn" type="button" data-qty-change="-1" aria-label="Decrease quantity">-</button>
+                  <input class="qty-input" type="number" min="0" value="{{ item.quantity }}" data-qty-input aria-label="Quantity">
+                  <button class="qty-btn" type="button" data-qty-change="1" aria-label="Increase quantity">+</button>
+                </div>
+                <div class="cart-item-meta">
+                  <span class="text-red font-semibold">{{ item.final_price | money }}</span>
+                  <button class="link-red" type="button" data-remove-item>Remove</button>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+    <div class="drawer-footer">
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-sm uppercase tracking-widest">Subtotal</span>
+        <span class="text-red font-semibold" data-cart-subtotal>{{ cart.total_price | money }}</span>
+      </div>
+      <a class="btn btn-outline w-full text-center block" href="{{ routes.cart_url }}">{{ 'cart.view_cart' | t }}</a>
+      <form action="/checkout" method="post" class="mt-4">
+        <button class="btn btn-primary w-full" type="submit">{{ 'cart.checkout' | t }}</button>
+      </form>
+    </div>
+  </aside>
+</div>
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "settings": []
+}
+{% endschema %}

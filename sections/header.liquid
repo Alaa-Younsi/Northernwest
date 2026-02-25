@@ -1,0 +1,72 @@
+<header class="header fixed top-0 left-0 w-full z-50" data-header>
+  <div class="header-inner container flex items-center justify-between">
+    <a href="{{ routes.root_url }}" class="flex items-center gap-4">
+      {% if settings.logo %}
+        {{ settings.logo | image_url: width: 180 | image_tag: class: 'logo-image', alt: settings.logo_alt }}
+      {% else %}
+        <img class="logo-image" src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name }}">
+      {% endif %}
+    </a>
+
+    <nav class="hidden md:flex items-center gap-6 text-sm uppercase tracking-wide">
+      {% assign menu_links = linklists.main-menu.links %}
+      {% if menu_links != blank %}
+        {% for link in menu_links %}
+          {% assign is_active = false %}
+          {% if link.active or link.current %}
+            {% assign is_active = true %}
+          {% endif %}
+          <a class="nav-link{% if is_active %} is-active{% endif %}" href="{{ link.url }}" {% if is_active %}aria-current="page"{% endif %}>{{ link.title }}</a>
+        {% endfor %}
+      {% else %}
+        <a class="nav-link" href="{{ routes.root_url }}">Home</a>
+        <a class="nav-link" href="/collections">Categories</a>
+        <a class="nav-link" href="/collections/gaming">Gaming</a>
+        <a class="nav-link" href="/collections/unique">Unique</a>
+        <a class="nav-link" href="/collections/best-sellers">Best Sellers</a>
+        <a class="nav-link" href="/pages/contact">Contact</a>
+      {% endif %}
+    </nav>
+
+    <div class="flex items-center gap-4">
+      <button class="icon-button" data-cart-toggle aria-label="Open cart">
+        <span class="sr-only">Cart</span>
+        <span class="relative inline-block w-6 h-6">
+          {% render 'icon-cart' %}
+        </span>
+        <span class="text-sm text-red font-semibold" data-cart-count>{{ cart.item_count }}</span>
+      </button>
+      <button class="md:hidden icon-button" data-mobile-toggle aria-label="Open menu">
+        <span class="uppercase text-sm tracking-wide">Menu</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-menu fixed inset-0 bg-black z-40" data-mobile-menu aria-hidden="true">
+    <div class="mobile-menu-inner">
+      <div class="flex items-center justify-between mb-8">
+      <span class="text-lg uppercase tracking-widest font-bold">Menu</span>
+      <button class="text-sm uppercase tracking-wide" data-mobile-close>Close</button>
+    </div>
+      <nav class="flex flex-col gap-6 text-2xl uppercase tracking-wide">
+        {% if menu_links != blank %}
+          {% for link in menu_links %}
+            <a class="nav-link" href="{{ link.url }}">{{ link.title }}</a>
+          {% endfor %}
+        {% else %}
+          <a class="nav-link" href="{{ routes.root_url }}">Home</a>
+          <a class="nav-link" href="/collections/all">Shop</a>
+          <a class="nav-link" href="/collections">Collections</a>
+          <a class="nav-link" href="/pages/contact">Contact</a>
+        {% endif %}
+      </nav>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": []
+}
+{% endschema %}

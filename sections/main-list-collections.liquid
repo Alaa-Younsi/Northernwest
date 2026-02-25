@@ -1,0 +1,35 @@
+<section class="section collections-page">
+  <div class="container">
+    <div class="section-head collections-head">
+      <h1 class="section-title">Collections</h1>
+      <p class="text-muted">Browse every drop by category.</p>
+    </div>
+
+    <div class="collections-grid">
+      {% for collection in collections %}
+        {% assign collection_image = collection.image | default: collection.featured_image %}
+        <a class="collection-card" href="{{ collection.url }}">
+          <div class="collection-card-media">
+            {% if collection_image %}
+              {{ collection_image | image_url: width: 800 | image_tag: class: 'collection-card-img', loading: 'lazy', alt: collection.title }}
+            {% else %}
+              <div class="collection-card-placeholder" aria-hidden="true"></div>
+            {% endif %}
+          </div>
+          <div class="collection-card-body">
+            <p class="eyebrow text-red">Collection</p>
+            <h2 class="collection-card-title">{{ collection.title }}</h2>
+            <p class="text-sm text-muted">{{ collection.all_products_count }} products</p>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "List collections",
+  "settings": []
+}
+{% endschema %}

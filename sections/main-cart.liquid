@@ -1,0 +1,48 @@
+<section class="section">
+  <div class="container">
+    <h1 class="section-title mb-6">Cart</h1>
+
+    {% if cart.item_count == 0 %}
+      <p class="text-muted">{{ 'cart.empty' | t }}</p>
+    {% else %}
+      <form action="{{ routes.cart_url }}" method="post">
+        <div class="flex flex-col gap-6">
+          {% for item in cart.items %}
+            <div class="card cart-row">
+              <div class="cart-thumb cart-thumb-large">
+                {{ item.image | image_url: width: 240 | image_tag: class: 'cart-thumb-image', loading: 'lazy', alt: item.image.alt | default: item.product.title }}
+              </div>
+              <div class="flex-1">
+                <h3 class="text-xl font-semibold mb-2">{{ item.product.title }}</h3>
+                <p class="text-sm text-muted mb-4">{{ item.variant.title }}</p>
+                <div class="flex items-center gap-4">
+                  <div class="cart-controls qty-controls">
+                    <button class="qty-btn" type="button" data-qty-step="-1" aria-label="Decrease quantity">-</button>
+                    <input class="qty-input" type="number" name="updates[]" value="{{ item.quantity }}" min="0" data-qty-input-generic>
+                    <button class="qty-btn" type="button" data-qty-step="1" aria-label="Increase quantity">+</button>
+                  </div>
+                  <span class="text-red font-semibold">{{ item.final_line_price | money }}</span>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="flex items-center justify-between mt-8">
+          <p class="text-sm uppercase tracking-widest">Subtotal</p>
+          <p class="text-red text-xl font-semibold">{{ cart.total_price | money }}</p>
+        </div>
+        <div class="flex flex-col md:flex-row gap-4 mt-6">
+          <button class="btn btn-outline w-full" type="submit" name="update">Update cart</button>
+          <button class="btn btn-primary w-full" type="submit" name="checkout">{{ 'cart.checkout' | t }}</button>
+        </div>
+      </form>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main cart",
+  "settings": []
+}
+{% endschema %}

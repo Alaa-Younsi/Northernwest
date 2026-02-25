@@ -1,0 +1,76 @@
+<footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      {% if settings.logo %}
+        {{ settings.logo | image_url: width: 180 | image_tag: class: 'logo-image', alt: settings.logo_alt }}
+      {% else %}
+        <img class="logo-image" src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name }}">
+      {% endif %}
+      <p class="text-sm text-muted">Premium gaming accessories engineered for speed, precision, and control.</p>
+    </div>
+    <div>
+      <h3 class="text-sm uppercase tracking-widest mb-4">Navigation</h3>
+      <form action="{{ routes.search_url }}" method="get" class="footer-search" role="search">
+        <input class="input" type="search" name="q" placeholder="Search products" aria-label="Search products">
+        <input type="hidden" name="type" value="product">
+        <button class="btn btn-outline" type="submit">Search</button>
+      </form>
+      <nav class="flex flex-col gap-3 text-sm">
+        {% assign footer_links = linklists.footer.links %}
+        {% if footer_links != blank %}
+          {% for link in footer_links %}
+            {% assign link_title_normalized = link.title | downcase | strip %}
+            {% unless link_title_normalized contains 'search' %}
+              <a class="nav-link" href="{{ link.url }}">{{ link.title }}</a>
+            {% endunless %}
+          {% endfor %}
+        {% else %}
+          <a class="nav-link" href="/pages/about">About</a>
+          <a class="nav-link" href="/pages/contact">Contact</a>
+          <a class="nav-link" href="/collections">Collections</a>
+        {% endif %}
+      </nav>
+    </div>
+    <div>
+      <h3 class="text-sm uppercase tracking-widest mb-4">Policies</h3>
+      <nav class="flex flex-col gap-3 text-sm">
+        {% if shop.policy.privacy_policy %}
+          <a class="nav-link" href="{{ shop.policy.privacy_policy.url }}">Privacy Policy</a>
+        {% else %}
+          <a class="nav-link" href="/policies/privacy-policy">Privacy Policy</a>
+        {% endif %}
+        {% if shop.policy.terms_of_service %}
+          <a class="nav-link" href="{{ shop.policy.terms_of_service.url }}">Terms of Service</a>
+        {% else %}
+          <a class="nav-link" href="/policies/terms-of-service">Terms of Service</a>
+        {% endif %}
+        {% if shop.policy.shipping_policy %}
+          <a class="nav-link" href="{{ shop.policy.shipping_policy.url }}">Shipping Policy</a>
+        {% else %}
+          <a class="nav-link" href="/policies/shipping-policy">Shipping Policy</a>
+        {% endif %}
+        {% if shop.policy.refund_policy %}
+          <a class="nav-link" href="{{ shop.policy.refund_policy.url }}">Refund Policy</a>
+        {% else %}
+          <a class="nav-link" href="/policies/refund-policy">Refund Policy</a>
+        {% endif %}
+      </nav>
+    </div>
+  </div>
+  <div class="container footer-trust">
+    <span class="badge"><span class="badge-icon" aria-hidden="true">🔒</span><span>Secure checkout</span></span>
+    <span class="badge"><span class="badge-icon" aria-hidden="true">💳</span><span>Safe payment methods</span></span>
+    <span class="badge"><span class="badge-icon" aria-hidden="true">🚚</span><span>Fast free shipping</span></span>
+  </div>
+  <div class="container footer-bottom">
+    <p class="footer-credit"><a class="nav-link" href="https://alaayounsi.vercel.app/" target="_blank" rel="noopener noreferrer">Website created by Alaa Younsi</a></p>
+    <p class="text-sm text-muted">&copy; {{ 'now' | date: '%Y' }} Northernwest. All rights reserved.</p>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": []
+}
+{% endschema %}

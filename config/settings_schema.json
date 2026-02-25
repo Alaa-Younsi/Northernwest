@@ -1,0 +1,33 @@
+[
+  {
+    "name": "Theme settings",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "text",
+        "id": "logo_alt",
+        "label": "Logo alt text",
+        "default": "Northernwest"
+      },
+      {
+        "type": "url",
+        "id": "social_instagram",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "url",
+        "id": "social_twitter",
+        "label": "X (Twitter) URL"
+      },
+      {
+        "type": "url",
+        "id": "social_youtube",
+        "label": "YouTube URL"
+      }
+    ]
+  }
+]

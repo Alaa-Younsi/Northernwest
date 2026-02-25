@@ -1,0 +1,41 @@
+<section class="section collection-section">
+  <div class="container collection-wrap">
+    <div class="section-head collection-head">
+      <div class="collection-title">
+        <div class="collection-image">
+          {% if collection.image %}
+            {{ collection.image | image_url: width: 140 | image_tag: class: 'collection-image-img', loading: 'lazy', alt: collection.image.alt | default: collection.title }}
+          {% else %}
+            <span class="collection-image-placeholder" aria-hidden="true"></span>
+          {% endif %}
+        </div>
+        <h1 class="section-title">{{ collection.title }}</h1>
+      </div>
+      <form class="sort-form" method="get" action="{{ collection.url }}">
+        <label class="text-sm uppercase tracking-widest" for="sort-by">Sort</label>
+        <select id="sort-by" name="sort_by" class="input">
+          {% for option in collection.sort_options %}
+            <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>{{ option.name }}</option>
+          {% endfor %}
+        </select>
+      </form>
+    </div>
+    {% if collection.description != blank %}
+      <p class="text-muted mb-8">{{ collection.description }}</p>
+    {% endif %}
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {% for product in collection.products %}
+        {% render 'product-card', product: product %}
+      {% else %}
+        <p class="text-muted">No products found.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main collection",
+  "settings": []
+}
+{% endschema %}

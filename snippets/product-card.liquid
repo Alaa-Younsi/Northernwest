@@ -1,0 +1,21 @@
+<article class="card card-product card-hover">
+  <a href="{{ product.url }}" class="block">
+    <div class="card-media">
+      {% if product.featured_image %}
+        {{ product.featured_image | image_url: width: 800 | image_tag: class: 'card-media-img object-cover', loading: 'lazy', width: 800, height: 800, alt: product.featured_image.alt | default: product.title }}
+      {% endif %}
+    </div>
+    <h3 class="card-title">{{ product.title }}</h3>
+  </a>
+  <div class="card-meta">
+    <p class="text-red font-semibold">{{ product.price | money }}</p>
+    {% if product.available %}
+      {% form 'product', product, class: 'card-form', data-ajax-add: true %}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <button type="submit" class="btn btn-primary btn-small">Add to cart</button>
+      {% endform %}
+    {% else %}
+      <span class="text-sm text-muted">{{ 'products.sold_out' | t }}</span>
+    {% endif %}
+  </div>
+</article>

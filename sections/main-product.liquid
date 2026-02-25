@@ -1,0 +1,228 @@
+<section class="section product-page">
+  <div class="container product-layout">
+    <div class="product-gallery" data-gallery>
+      <div class="gallery-main aspect-square">
+        <button class="gallery-arrow gallery-prev" type="button" data-gallery-prev aria-label="Previous image">&#8249;</button>
+        <button class="gallery-arrow gallery-next" type="button" data-gallery-next aria-label="Next image">&#8250;</button>
+        {% if product.featured_image %}
+          <img
+            class="gallery-image object-cover w-full h-full"
+            data-gallery-main="true"
+            src="{{ product.featured_image | image_url: width: 900 }}"
+            srcset="{{ product.featured_image | image_url: width: 450 }} 450w, {{ product.featured_image | image_url: width: 900 }} 900w"
+            sizes="(min-width: 768px) 600px, 100vw"
+            loading="eager"
+            width="1200"
+            height="1200"
+            alt="{{ product.featured_image.alt | default: product.title }}"
+          >
+        {% endif %}
+      </div>
+      <div class="gallery-thumbs" data-gallery-strip>
+        {% for media in product.media %}
+          {% assign preview = media.preview_image %}
+          <button class="thumb" type="button" aria-label="View image" data-gallery-thumb data-index="{{ forloop.index0 }}" data-media-id="{{ media.id }}" data-full="{{ preview | image_url: width: 900 }}" data-src="{{ preview | image_url: width: 900 }}" data-srcset="{{ preview | image_url: width: 450 }} 450w, {{ preview | image_url: width: 900 }} 900w" data-alt="{{ media.alt | default: product.title }}">
+            {{ preview | image_url: width: 300 | image_tag: class: 'thumb-image aspect-square object-contain w-full', loading: 'lazy', width: 300, height: 300, alt: media.alt | default: product.title }}
+          </button>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="product-details">
+      <p class="eyebrow text-red">{{ product.vendor }}</p>
+      <h1 class="product-title">{{ product.title }}</h1>
+      {% if product.metafields.custom.hook_line != blank %}
+        <p class="product-hook text-muted">{{ product.metafields.custom.hook_line }}</p>
+      {% endif %}
+      <div class="product-meta">
+        <p class="price text-red price-box">{{ product.price | money }}</p>
+        <div class="rating">
+          <span class="text-sm text-muted">Rating</span>
+          <span class="rating-value">{{ product.metafields.custom.rating | default: '—' }}</span>
+        </div>
+      </div>
+
+      {% form 'product', product, class: 'product-form', data-ajax-add: true %}
+        {% if product.has_only_default_variant == false %}
+          <div class="variant-stack">
+            <label class="text-sm uppercase tracking-widest" for="ProductVariant">Variant</label>
+            <select id="ProductVariant" name="id" class="input" data-variant-select>
+              {% for variant in product.variants %}
+                <option value="{{ variant.id }}" data-media-id="{{ variant.featured_media.id }}" data-image-src="{{ variant.featured_image | image_url: width: 900 }}" data-image-alt="{{ variant.featured_image.alt | default: variant.title | default: product.title }}" {% if variant == product.selected_or_first_available_variant %}selected{% endif %}>
+                  {{ variant.title }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+        {% else %}
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        {% endif %}
+
+        <div class="qty-row">
+          <label class="text-sm uppercase tracking-widest" for="Quantity">Quantity</label>
+          <div class="cart-controls qty-controls">
+            <button class="qty-btn" type="button" data-qty-step="-1" aria-label="Decrease quantity">-</button>
+            <input id="Quantity" class="input qty-input" type="number" name="quantity" min="1" value="1" inputmode="numeric" data-qty-input-generic>
+            <button class="qty-btn" type="button" data-qty-step="1" aria-label="Increase quantity">+</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-full" {% unless product.available %}disabled{% endunless %}>
+          {% if product.available %}
+            {{ 'products.add_to_cart' | t }}
+          {% else %}
+            {{ 'products.sold_out' | t }}
+          {% endif %}
+        </button>
+
+        {{ form | payment_button }}
+      {% endform %}
+
+      <div class="trust-badges">
+        <span class="badge"><span class="badge-icon" aria-hidden="true">🔒</span><span>Secure checkout</span></span>
+        <span class="badge"><span class="badge-icon" aria-hidden="true">💳</span><span>Safe payment methods</span></span>
+        <span class="badge"><span class="badge-icon" aria-hidden="true">🚚</span><span>Fast free shipping</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if product.metafields.custom.hook_title != blank %}
+  <section class="section product-hook-section">
+    <div class="container">
+      <h2 class="section-title">{{ product.metafields.custom.hook_title }}</h2>
+    </div>
+  </section>
+{% endif %}
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Description</h2>
+    </div>
+    <div class="text-muted body-copy">{{ product.description }}</div>
+  </div>
+</section>
+
+{% if product.metafields.custom.features != blank %}
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">Features</h2>
+      </div>
+      <div class="feature-grid">
+        {% assign features = product.metafields.custom.features | split: '\n' %}
+        {% for feature in features %}
+          {% if feature != blank %}
+            <div class="card feature-card">{{ feature }}</div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% if product.metafields.custom.split_image != blank or product.metafields.custom.split_text != blank %}
+  <section class="section">
+    <div class="container split-section">
+      <div class="split-media">
+        {% if product.metafields.custom.split_image != blank %}
+          {{ product.metafields.custom.split_image | image_url: width: 1200 | image_tag: class: 'aspect-square object-cover w-full', loading: 'lazy', width: 1200, height: 1200, alt: product.title }}
+        {% endif %}
+      </div>
+      <div class="split-copy text-muted">
+        {{ product.metafields.custom.split_text }}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% if product.metafields.custom.video_url != blank %}
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">Video</h2>
+      </div>
+      <div class="video-frame">
+        <iframe class="aspect-video" src="{{ product.metafields.custom.video_url }}" title="{{ product.title }}" loading="lazy" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% if product.metafields.custom.specs_table != blank %}
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">Technical Specs</h2>
+      </div>
+      <div class="specs-table">
+        {{ product.metafields.custom.specs_table }}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% if product.metafields.custom.faq_1_question != blank %}
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">FAQ</h2>
+      </div>
+      <div class="faq" x-data>
+        {% for index in (1..4) %}
+          {% assign q_key = 'faq_' | append: index | append: '_question' %}
+          {% assign a_key = 'faq_' | append: index | append: '_answer' %}
+          {% assign question = product.metafields.custom[q_key] %}
+          {% assign answer = product.metafields.custom[a_key] %}
+          {% if question != blank and answer != blank %}
+            <div class="faq-item" x-data="{ open: false }">
+              <button class="faq-question" type="button" @click="open = !open">
+                <span>{{ question }}</span>
+                <span class="faq-toggle" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" x-show="open" x-transition>
+                {{ answer }}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "{{ product.title | escape }}",
+    "image": [
+      {% for image in product.images %}
+        "{{ image | image_url: width: 1200 }}"{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ],
+    "description": "{{ product.description | strip_html | escape }}",
+    "sku": "{{ product.selected_or_first_available_variant.sku | escape }}",
+    "brand": {
+      "@type": "Brand",
+      "name": "{{ product.vendor | escape }}"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": "{{ shop.url }}{{ product.url }}",
+      "priceCurrency": "{{ shop.currency }}",
+      "price": "{{ product.selected_or_first_available_variant.price | money_without_currency | replace: ',', '' }}",
+      "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}"
+    }
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Main product",
+  "settings": []
+}
+{% endschema %}

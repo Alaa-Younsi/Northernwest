@@ -1,0 +1,65 @@
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Featured Categories</h2>
+      <a class="text-sm uppercase tracking-widest text-red" href="/collections">View all</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {% for block in section.blocks %}
+        <a class="card card-glow" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+          <p class="eyebrow text-red">{{ block.settings.kicker }}</p>
+          <h3 class="card-title">{{ block.settings.title }}</h3>
+          <p class="text-sm text-muted">{{ block.settings.description }}</p>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured categories",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Kicker",
+          "default": "Category"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Keyboards"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Mechanical builds tuned for instant response."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured categories",
+      "blocks": [
+        { "type": "category", "settings": { "kicker": "Keyboards", "title": "Keyboards", "description": "Mechanical builds tuned for instant response." } },
+        { "type": "category", "settings": { "kicker": "Mice", "title": "Mice", "description": "Ultra-light bodies with ruthless precision." } },
+        { "type": "category", "settings": { "kicker": "Headsets", "title": "Headsets", "description": "Spatial sound engineered for dominance." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

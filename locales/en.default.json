@@ -1,0 +1,17 @@
+{
+  "general": {
+    "accessibility": {
+      "close": "Close"
+    }
+  },
+  "cart": {
+    "title": "Your Cart",
+    "empty": "Your cart is empty",
+    "checkout": "Checkout",
+    "view_cart": "View cart"
+  },
+  "products": {
+    "add_to_cart": "Add to cart",
+    "sold_out": "Sold out"
+  }
+}

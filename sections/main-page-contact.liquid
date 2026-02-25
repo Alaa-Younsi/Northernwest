@@ -1,0 +1,31 @@
+<section class="py-16">
+  <div class="container px-4 md:px-6 max-w-5xl">
+    <h1 class="text-3xl md:text-4xl font-bold uppercase tracking-wide mb-6">Contact</h1>
+    <p class="text-muted mb-8">Reach out for support, partnerships, or wholesale inquiries.</p>
+
+    {% form 'contact' %}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="text-sm uppercase tracking-widest" for="ContactFormName">Name</label>
+          <input class="input" type="text" id="ContactFormName" name="contact[name]" required>
+        </div>
+        <div>
+          <label class="text-sm uppercase tracking-widest" for="ContactFormEmail">Email</label>
+          <input class="input" type="email" id="ContactFormEmail" name="contact[email]" required>
+        </div>
+      </div>
+      <div class="mt-6">
+        <label class="text-sm uppercase tracking-widest" for="ContactFormMessage">Message</label>
+        <textarea class="input" id="ContactFormMessage" name="contact[body]" rows="6" required></textarea>
+      </div>
+      <button class="btn btn-primary mt-6 mb-6" type="submit">Send</button>
+    {% endform %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact page",
+  "settings": []
+}
+{% endschema %}

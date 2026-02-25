@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "splash": { "type": "splash-screen" },
+    "hero": { "type": "hero" },
+    "headphone": { "type": "headphone" },
+    "keyboard": { "type": "keyboard" },
+    "console": { "type": "console" },
+    "featured": { "type": "featured-categories" },
+    "best": { "type": "best-sellers" },
+    "value": { "type": "value-prop" }
+  },
+  "order": ["splash", "hero", "headphone", "keyboard", "console", "featured", "best", "value"]
+}

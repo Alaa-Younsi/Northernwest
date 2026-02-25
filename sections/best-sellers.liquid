@@ -1,0 +1,57 @@
+<section class="section">
+  <div class="container">
+    {% assign best_seller_collection = section.settings.collection %}
+    {% if best_seller_collection == blank %}
+      {% assign best_seller_collection = collections['best-sellers'] %}
+    {% endif %}
+    {% if best_seller_collection == blank %}
+      {% assign best_seller_collection = collections['best-seller'] %}
+    {% endif %}
+    {% if best_seller_collection == blank %}
+      {% assign best_seller_collection = collections['bestsellers'] %}
+    {% endif %}
+    {% if best_seller_collection == blank %}
+      {% assign best_seller_handle = '' %}
+      {% for link in linklists.main-menu.links %}
+        {% assign link_title = link.title | downcase %}
+        {% if link_title contains 'best seller' %}
+          {% assign best_seller_handle = link.url | split: '/collections/' | last | split: '?' | first | split: '/' | first %}
+        {% endif %}
+      {% endfor %}
+      {% if best_seller_handle != blank %}
+        {% assign best_seller_collection = collections[best_seller_handle] %}
+      {% endif %}
+    {% endif %}
+    {% if best_seller_collection == blank %}
+      {% assign best_seller_collection = collections['all'] %}
+    {% endif %}
+
+    <div class="section-head">
+      <h2 class="section-title">Best Sellers</h2>
+      {% if best_seller_collection != blank %}
+        <a class="text-sm uppercase tracking-widest text-red" href="{{ best_seller_collection.url }}">View collection</a>
+      {% endif %}
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {% for product in best_seller_collection.products limit: 4 %}
+        {% render 'product-card', product: product %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Best sellers",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    }
+  ],
+  "presets": [
+    { "name": "Best sellers" }
+  ]
+}
+{% endschema %}
