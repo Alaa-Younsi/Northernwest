@@ -3,9 +3,6 @@
 ## Overview
 This is a fully custom Shopify Online Store 2.0 theme for Northernwest, engineered as a premium, minimalist gaming accessories storefront. The design is intentionally bold, high contrast, and product first, while staying fast, clean, and conversion focused.
 
-## Author
-Built by Alaa Younsi, professional web developer and creator of this custom Northernwest theme.
-
 ## Screenshots
 
 
